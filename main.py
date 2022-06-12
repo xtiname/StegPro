@@ -1,6 +1,7 @@
-import os
+import io, os
 from PIL import Image
 import PySimpleGUI as sg
+import webbrowser
 
 
 max_color_value = 255
@@ -89,12 +90,15 @@ sg.theme('Light Blue 2')
 file_types = [("JPEG (*.jpg)", "*.jpg"),
               ("PNG (*.png)", "*.png"),
               ("All files (*.*)", "*.*")]
-file_type = [("PNG (*.png)", "*.png")]
+png_type = [("PNG (*.png)", "*.png")]
+
+menu_def = [['Help', ['About App']]]
+url = 'https://github.com/xtiname/StegPro/blob/main/README.md'
 
 
 def main():
-
     layout = [
+              [sg.Menu(menu_def, size=(200,200))],
               [sg.Text('Welcome to StegPro!', font=("Courier New", 20))],
               [sg.Text('', font=("Courier New", 15))],
               [sg.Text('What would you like to do?', font=("Courier New", 15))],
@@ -102,9 +106,11 @@ def main():
               [sg.Text('', font=("Courier New", 15))],
               [sg.Button('Encode Image', font=("Courier New", 15))],
               [sg.Button('Decode Image', font=("Courier New", 15))],
+              [sg.Text('', font=("Courier New", 70))],
+              [sg.Text('Krystsina Rytsikava - 2022 - Mendel University in Brno', text_color='white smoke')],
               ]
 
-    window = sg.Window('StegPro', layout, size=(500, 400), element_justification='c')
+    window = sg.Window('StegPro', layout, size=(520, 400), element_justification='c')
 
     while True:
         event, values = window.read()
@@ -113,20 +119,19 @@ def main():
 
         if event == 'Encode Image':
             layout = [
-                [sg.Image(key='-encoded-image-')],
                 [sg.Text('Cover Image'), sg.Input(key='file1'), sg.FileBrowse(file_types=file_types)],
                 [sg.Text('Secret Image'), sg.Input(key='file2'), sg.FileBrowse(file_types=file_types)],
-                [sg.Output(size=(68, 20), key='output')],
+                [sg.Output(size=(68, 18), key='output'), [sg.Image(key='-ENCODED-IMAGE-')]],
                 [sg.Submit(), sg.Input(key='Save', visible=False, enable_events=True),
-                 sg.FileSaveAs(file_types=file_type),
+                 sg.FileSaveAs(file_types=png_type),
                  sg.Cancel()],
             ]
 
-            window = sg.Window('StegPro', layout)
+            window = sg.Window('StegPro', layout, size=(520, 440))
 
             while True:
                 event, values = window.read()
-                if event in (None, 'Exit', 'Cancel'):
+                if event in (None, 'Cancel'):
                     break
                 elif event == 'Submit':
                     image_to_hide_in = values['file1']
@@ -138,29 +143,27 @@ def main():
                             image_to_hide = image_to_hide.resize(image_to_hide_in.size)
 
                             encoded_image = encode(image_to_hide, image_to_hide_in)
-                            print(image_to_hide_in)
-                            print(image_to_hide)
-                            print(encoded_image)
+                            print('Image is succesfully encoded. Click "Save as..." button to save it.')
+
                         elif image_to_hide.size > image_to_hide_in.size:
                             print('Cover Image size is smaller than Secret Image size. Please try again!')
 
                 elif event == 'Save':
-                    print(f'{values["Save"]}')
                     encoded_image.save(values['Save'])
 
             window.close()
 
         if event == 'Decode Image':
             layout = [
-                [sg.Image(key='-encoded-image-')],
-                [sg.Text('Image to decode'), sg.Input(key='file1'), sg.FileBrowse(file_types=file_type)],
+                [sg.Image(key='-DECODED-IMAGE-')],
+                [sg.Text('Image to decode'), sg.Input(key='file1'), sg.FileBrowse(file_types=png_type)],
                 [sg.Output(size=(68, 20), key='output')],
                 [sg.Submit(), sg.Input(key='Save', visible=False, enable_events=True),
                  sg.FileSaveAs(file_types=file_types),
                  sg.Cancel()],
             ]
 
-            window = sg.Window('StegPro', layout)
+            window = sg.Window('StegPro', layout, size=(520, 440))
 
             while True:
                 event, values = window.read()
@@ -170,12 +173,17 @@ def main():
                     image_to_decode = values['file1']
                     if os.path.exists(image_to_decode):
                         image_to_decode = Image.open(image_to_decode)
+                        decoded_image = decode(image_to_decode)
+                        print('Image is succesfully decoded. Click "Save as..." button to save it.')
 
                 elif event == 'Save':
-                    print(f'{values["Save"]}')
-                    decode(image_to_decode).save(values['Save'])
+                    decoded_image.save(values['Save'])
 
             window.close()
+
+        if event == 'About App':
+            webbrowser.open(url)
+
 
     window.close()
 
