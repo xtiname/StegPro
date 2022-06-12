@@ -1,4 +1,4 @@
-import io, os
+import os
 from PIL import Image
 import PySimpleGUI as sg
 import webbrowser
