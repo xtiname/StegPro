@@ -1,13 +1,13 @@
 # StegPro
 
-## DESCRIPTION <br>
-StegPro is a steganography program that is able to hide image data into other images. The program consists of 2 parts: encoding and decoding.
+## ABOUT <br>
+StegPro is a steganography application that is able to hide images into other images. The program includes two options: encoding and decoding. It uses Least Significant Bit steganography method in which least significant bit of pixels of the image is replaced with data bits. As a result we have stego-image (encoded image) that contains embedded data as hidden.
 
 ## 1.	ENCODING <br>
-Use the encoding command if you want to hide secret image in a cover image. Browse the images and click on submit button. The program will display encoded image. If you want to save it, click on save as… button. Please note that only .png extension can be used while saving an image.
+Click "Encode" button to hide an image into another image. Chose the images by "Browse" button and click on "Submit". The program will encode the image and when it is done, notify you with "Image is successfully encoded" message. If you want to save the encoded image, click on "Save As…" button. Please note that only .png extension can be used while saving an image.
 
 ## 2.	DECODING <br>
-Use the decoding command if you want to extract secret image from encoded image. Browse the image and click on submit button. The program will display decoded image. Click on save as button to save it.
+Chose "Decode" option if you want to extract hidden image from encoded image. Chose the encoded image and click on "Submit" button. The program will start decoding the image and when it is done, notify you with "Image is successfully decoded" message. Click on "Save As..." button to save it.
 
 ## AUTHOR <br>
-Kristina Rytikova - [kristin.rytikova@mendelu.cz]
+kristin.rytikova@mendelu.cz
