@@ -143,7 +143,7 @@ def main():
                             image_to_hide = image_to_hide.resize(image_to_hide_in.size)
 
                             encoded_image = encode(image_to_hide, image_to_hide_in)
-                            print('Image is succesfully encoded. Click "Save as..." button to save it.')
+                            print('Image is successfully encoded. Click "Save As..." button to save it.')
 
                         elif image_to_hide.size > image_to_hide_in.size:
                             print('Cover Image size is smaller than Secret Image size. Please try again!')
@@ -174,7 +174,7 @@ def main():
                     if os.path.exists(image_to_decode):
                         image_to_decode = Image.open(image_to_decode)
                         decoded_image = decode(image_to_decode)
-                        print('Image is succesfully decoded. Click "Save as..." button to save it.')
+                        print('Image is successfully decoded. Click "Save As..." button to save it.')
 
                 elif event == 'Save':
                     decoded_image.save(values['Save'])
@@ -184,9 +184,8 @@ def main():
         if event == 'About App':
             webbrowser.open(url)
 
-
     window.close()
 
-
+    
 if __name__ == '__main__':
     main()
